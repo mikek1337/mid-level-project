@@ -5,9 +5,12 @@ import { logHandler } from "./middleware/LogHandler";
 import { toNodeHandler } from 'better-auth/node';
 import { auth } from "./utils/auth";
 import { v1Router } from "./v1/";
+import { limiter } from "./middleware/RateLimit";
+
 loadEnvFile();
 const app = express();
 
+app.use(limiter);
 app.use(logHandler);
 
 app.all("/api/auth/*splat", toNodeHandler(auth))
