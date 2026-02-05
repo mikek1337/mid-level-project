@@ -62,3 +62,21 @@ export async function updateTodo(prisma: PrismaClient, userId: string, id: strin
         }
     })
 }
+
+export async function markForDeletion(prisma:PrismaClient, userId: string, id: string): Promise<todos>{
+    const updatedTodo = await updateTodo(prisma, userId, id, { markForDelete: true});
+    return updatedTodo
+}
+
+export async function deleteToDo(prisma: PrismaClient, userId: string, id: string): Promise<todos>{
+    const todo = await getTodoosById(prisma, userId, id);
+    if(!todo){
+        throw Error("Todo not Found");
+    }
+    return await prisma.todos.delete({
+        where:{
+            id: id,
+            userId: userId,
+        }
+    });
+}

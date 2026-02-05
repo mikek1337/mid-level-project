@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { createTodo, getTodoosById, listTodos, updateTodo } from "../services/todos.service";
+import { createTodo, deleteToDo, getTodoosById, listTodos, markForDeletion, updateTodo } from "../services/todos.service";
 import { prisma } from "../../utils/db";
 import { CreateTodoSchema, TodoSchema } from "../../types/todos";
 export async function addTodo(req: Request, res: Response) {
@@ -32,4 +32,23 @@ export async function updateToDo(req: Request, res: Response) {
     const updateData = TodoSchema.partial().parse(req.body);
     const updatedTodo = await updateTodo(prisma, req.user.id, todoId, updateData);
     res.status(200).json({ message: "Todo updated successfully", todo: updatedTodo });
+}
+
+
+export async function markTodoForDeletion(req: Request, res: Response) {
+    const todoId = req.params.id as string;
+    if(!todoId){
+        return res.status(400).json({message: "Todo id is required"});
+    }
+    const markedToDo = await markForDeletion(prisma, req.user.id, todoId);
+    res.status(200).json({message: "Todo marked for deletion successfully", todo: markedToDo});
+}
+
+export async function removeToDo(req: Request, res: Response){
+    const todoId = req.params.id as string;
+    if(!todoId){
+        return res.status(400).json({message: "Todo id is required"});
+    }
+    const deletedToDo = await deleteToDo(prisma, req.user.id, todoId);
+    res.status(200).json({message: "Todo deleted successfully", todo: deletedToDo});
 }
