@@ -89,13 +89,14 @@ describe("Todos Service Tests", () => {
 
     it("Should update todo with correct id", async () => {
         const todo = await updateTodo(prisma, '1', '1', { title: 'updated title' });
+        const { id, ...rest } = mockData[0];
         expect(prisma.todos.update).toHaveBeenCalledWith({
             where: {
                 id: '1',
                 userId: '1'
             },
             data: {
-                ...mockData[0],
+                ...rest,
                 title: 'updated title'
             }
         });

@@ -83,10 +83,22 @@ model todos {
   title         String
   userId        String
   User          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  Reminder      reminder[]
   completed     Boolean  @default(false)
   markForDelete Boolean  @default(false)
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 
   @@map("todos")
+}
+
+model reminder{
+  id            String   @id @map("_id") @default(auto()) @db.ObjectId
+  todoId        String
+  ToDo          todos    @relation(fields: [todoId], references: [id], onDelete: Cascade)
+  remindAt      DateTime
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@map("reminder")
 }
