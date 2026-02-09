@@ -5,7 +5,7 @@
   "main": "server.js",
   "type": "module",
   "scripts": {
-    "dev": "webpack --watch",
+    "dev": "webpack && node dist/bundle.cjs",
     "start": "node dist/bundle.cjs",
     "build": "webpack",
     "test": "jest"

@@ -3,7 +3,7 @@ import z from "zod";
 export const ReminderSchema = z.object({
     id: z.string(),
     todoId: z.string(),
-    remindAt: z.date(),
+    remindAt: z.coerce.date(),
     createdAt: z.date(),
     updatedAt: z.date(),
 });
